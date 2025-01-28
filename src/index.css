@@ -48,7 +48,7 @@
 
 .graph-container {
   @apply relative bg-card rounded-lg border border-border p-4;
-  height: 300px;
+  height: 350px;
 }
 
 .metric-card {
