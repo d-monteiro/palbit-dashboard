@@ -9,28 +9,31 @@ interface WaveformGraphProps {
 
 const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) => {
   const metrics = calculateMetrics(data);
-  const chartData = data.map((value, index) => ({ index, value }));
+  const chartData = data.map((value, index) => ({ 
+    index, 
+    value 
+  }));
 
   return (
-    <div className="graph-container">
+    <div className="graph-container bg-black p-4 rounded-lg border border-gray-800" style={{ height: '300px' }}>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">{title}</h3>
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
         <div className="flex gap-4">
-          <div className="metric-card">
-            <span className="metric-value">{metrics.max.toFixed(3)}</span>
-            <span className="metric-label">Max</span>
+          <div className="metric-card bg-gray-900 px-3 py-1 rounded">
+            <span className="metric-value text-white">{metrics.max.toFixed(3)}</span>
+            <span className="metric-label text-gray-400 text-sm ml-2">Max</span>
           </div>
-          <div className="metric-card">
-            <span className="metric-value">{metrics.min.toFixed(3)}</span>
-            <span className="metric-label">Min</span>
+          <div className="metric-card bg-gray-900 px-3 py-1 rounded">
+            <span className="metric-value text-white">{metrics.min.toFixed(3)}</span>
+            <span className="metric-label text-gray-400 text-sm ml-2">Min</span>
           </div>
-          <div className="metric-card">
-            <span className="metric-value">{metrics.rms.toFixed(3)}</span>
-            <span className="metric-label">RMS</span>
+          <div className="metric-card bg-gray-900 px-3 py-1 rounded">
+            <span className="metric-value text-white">{metrics.rms.toFixed(3)}</span>
+            <span className="metric-label text-gray-400 text-sm ml-2">RMS</span>
           </div>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="80%">
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
           <XAxis 
@@ -41,6 +44,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
           <YAxis 
             stroke="#666"
             tick={{ fill: '#666' }}
+            domain={[-1.5, 1.5]}
           />
           <Line 
             type="monotone" 
@@ -48,6 +52,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
             stroke={color} 
             dot={false}
             strokeWidth={2}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>
