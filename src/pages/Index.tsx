@@ -8,7 +8,7 @@ import {
 } from '../utils/waveformGenerators';
 
 const SAMPLE_COUNT = 256;
-const WINDOW_SIZE = 100; // Number of points to show in the rolling window
+const WINDOW_SIZE = 1000; // Number of points to show in the rolling window
 const UPDATE_INTERVAL = 100; // ms
 
 const Index = () => {
