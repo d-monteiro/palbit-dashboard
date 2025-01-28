@@ -8,8 +8,8 @@ import {
 } from '../utils/waveformGenerators';
 
 const SAMPLE_COUNT = 256;
-const WINDOW_SIZE = 1000; // Number of points to show in the rolling window
-const UPDATE_INTERVAL = 100; // ms
+const WINDOW_SIZE = 100; // Number of points to show in the rolling window
+const UPDATE_INTERVAL = 10; // ms
 
 const Index = () => {
   const [time, setTime] = useState(0);
@@ -29,11 +29,13 @@ const Index = () => {
     const interval = setInterval(() => {
       setTime(t => {
         const newTime = t + 1;
-        const phase = newTime * 0.1;
+        // Adjust the phase calculation to maintain consistent frequency
+        const normalizedTime = (newTime * UPDATE_INTERVAL) / 1000; // Convert to seconds
+        const phase = normalizedTime * 2 * Math.PI; // Full cycle every second
         
-        // Generate new points
-        const newSinePoint = Math.sin(2 * Math.PI * (1 + Math.sin(phase * 0.1)) * newTime / SAMPLE_COUNT);
-        const newSquarePoint = Math.sin(2 * Math.PI * (1 + Math.sin(phase * 0.05)) * newTime / SAMPLE_COUNT) >= 0 ? 1 : -1;
+        // Generate new points with consistent frequency
+        const newSinePoint = Math.sin(phase);
+        const newSquarePoint = Math.sin(phase) >= 0 ? 1 : -1;
         const newTrianglePoint = ((newTime % SAMPLE_COUNT) / SAMPLE_COUNT) * 2 - 1;
 
         // Update data arrays with rolling window
@@ -55,7 +57,14 @@ const Index = () => {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold mb-8">Waveform Analysis Dashboard</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Waveform Analysis Dashboard</h1>
+          <img 
+            src="/company-logo.png" 
+            alt="Company Logo" 
+            className="h-12 w-12"
+          />
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <WaveformGraph 
