@@ -8,7 +8,7 @@ import {
 } from '../utils/waveformGenerators';
 
 const SAMPLE_COUNT = 256;
-const WINDOW_SIZE = 100; // Number of points to show in the rolling window
+const WINDOW_SIZE = 200; // Number of points to show in the rolling window
 const UPDATE_INTERVAL = 10; // ms
 
 const Index = () => {
@@ -62,7 +62,7 @@ const Index = () => {
           <img 
             src="/company-logo.svg" 
             alt="Company Logo" 
-            className="h-12 w-12"
+            className="h-24 w-24"
           />
         </div>
         
