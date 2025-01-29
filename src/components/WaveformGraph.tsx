@@ -33,7 +33,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
           </div>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height="85%">
+      <ResponsiveContainer width="100%" height="75%">
         <LineChart 
           data={chartData}
           margin={{ top: 5, right: 5, left: 5, bottom: 5 }}

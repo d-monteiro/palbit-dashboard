@@ -62,7 +62,7 @@ const Index = () => {
           <img 
             src="/company-logo.svg" 
             alt="Company Logo" 
-            className="h-24 w-48"
+            className="h-16 w-48"
           />
         </div>
         
