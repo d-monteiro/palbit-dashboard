@@ -15,7 +15,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
   }));
 
   return (
-    <div className="graph-container bg-black p-4 rounded-lg border border-gray-800" style={{ height: '300px' }}>
+    <div className="graph-container">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-white">{title}</h3>
         <div className="flex gap-4">
@@ -33,8 +33,11 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
           </div>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height="80%">
-        <LineChart data={chartData}>
+      <ResponsiveContainer width="100%" height="85%">
+        <LineChart 
+          data={chartData}
+          margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
           <XAxis 
             dataKey="index" 
@@ -45,6 +48,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
             stroke="#666"
             tick={{ fill: '#666' }}
             domain={[-1.5, 1.5]}
+            ticks={[-1.5, -1, -0.5, 0, 0.5, 1, 1.5]}
           />
           <Line 
             type="monotone" 
