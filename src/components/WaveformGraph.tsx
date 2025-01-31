@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Download, Pause, Play } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface WaveformGraphProps {
   data: number[];
@@ -21,9 +21,11 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
   const [displayData, setDisplayData] = useState<number[]>([]);
 
   // Update display data only when not frozen
-  if (!isFrozen) {
-    setDisplayData(data);
-  }
+  useEffect(() => {
+    if (!isFrozen) {
+      setDisplayData(data);
+    }
+  }, [data, isFrozen]);
 
   const metrics = calculateMetrics(displayData);
   const chartData = displayData.map((value, index) => ({ 
