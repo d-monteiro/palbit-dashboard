@@ -1,4 +1,4 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { calculateMetrics } from '../utils/waveformGenerators';
 
 interface WaveformGraphProps {
@@ -13,6 +13,11 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
     index, 
     value 
   }));
+
+  // Calculate the domain for x-axis to create sliding effect
+  const dataLength = chartData.length;
+  const xMin = Math.max(0, dataLength - 200); // Show last 200 points
+  const xMax = Math.max(200, dataLength); // Ensure we always show at least 200 points
 
   return (
     <div className="graph-container">
@@ -43,12 +48,26 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
             dataKey="index" 
             stroke="#666"
             tick={{ fill: '#666' }}
+            domain={[xMin, xMax]}
+            type="number"
           />
           <YAxis 
             stroke="#666"
             tick={{ fill: '#666' }}
             domain={[-1.5, 1.5]}
             ticks={[-1.5, -1, -0.5, 0, 0.5, 1, 1.5]}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
+              borderRadius: '4px',
+              color: '#fff'
+            }}
+            labelStyle={{ color: '#666' }}
+            formatter={(value: number) => [value.toFixed(3), 'Value']}
+            labelFormatter={(label) => `Sample ${label}`}
+            cursor={{ stroke: '#666', strokeWidth: 1 }}
           />
           <Line 
             type="monotone" 
