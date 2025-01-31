@@ -28,15 +28,24 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
   }, [data, isFrozen]);
 
   const metrics = calculateMetrics(displayData);
-  const chartData = displayData.map((value, index) => ({ 
-    index, 
-    value 
-  }));
+  const isFFT = title.includes('FFT');
+  const samplingRate = 100; // 100Hz sampling rate
 
-  // Calculate the domain for x-axis to create sliding effect
+  const chartData = displayData.map((value, index) => {
+    // For FFT, index represents frequency bins
+    // For time domain signals, convert index to time in seconds
+    const xValue = isFFT ? index : -(displayData.length - index) / samplingRate;
+    return { 
+      x: xValue, 
+      value 
+    };
+  });
+
+  // Calculate the domain for x-axis
   const dataLength = chartData.length;
-  const xMin = Math.max(0, dataLength - 200); // Show last 200 points
-  const xMax = Math.max(200, dataLength); // Ensure we always show at least 200 points
+  const timeWindow = dataLength / samplingRate; // Window size in seconds
+  const xMin = isFFT ? 0 : -timeWindow;
+  const xMax = isFFT ? dataLength : 0;
 
   const handleExport = (seconds: number) => {
     const samplesPerSecond = 100; // Assuming 100Hz sampling rate
@@ -114,17 +123,19 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
           <XAxis 
-            dataKey="index" 
+            dataKey="x" 
             stroke="#666"
             tick={{ fill: '#666' }}
             domain={[xMin, xMax]}
             type="number"
+            tickFormatter={(value) => isFFT ? value.toString() : value.toFixed(1)}
+            label={{ value: isFFT ? 'Frequency (Hz)' : 'Time (s)', position: 'insideBottom', offset: -5, fill: '#666' }}
           />
           <YAxis 
             stroke="#666"
             tick={{ fill: '#666' }}
-            domain={[-1.5, 1.5]}
-            ticks={[-1.5, -1, -0.5, 0, 0.5, 1, 1.5]}
+            domain={isFFT ? [0, 1] : [-1.5, 1.5]}
+            ticks={isFFT ? [0, 0.25, 0.5, 0.75, 1] : [-1.5, -1, -0.5, 0, 0.5, 1, 1.5]}
           />
           <Tooltip
             contentStyle={{
@@ -135,7 +146,7 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
             }}
             labelStyle={{ color: '#666' }}
             formatter={(value: number) => [value.toFixed(3), 'Value']}
-            labelFormatter={(label) => `Sample ${label}`}
+            labelFormatter={(label) => isFFT ? `Frequency: ${label} Hz` : `Time: ${label.toFixed(2)}s`}
             cursor={{ stroke: '#666', strokeWidth: 1 }}
           />
           <Line 
