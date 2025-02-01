@@ -58,7 +58,10 @@ const Index = () => {
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <Settings />
+          </div>
           <div className="flex items-center gap-4">
             <a href="https://www.palbit.pt" target="_blank" rel="noopener noreferrer">
               <img 
@@ -93,7 +96,6 @@ const Index = () => {
           />
         </div>
       </div>
-      <Settings />
     </div>
   );
 };
