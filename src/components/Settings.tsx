@@ -27,8 +27,12 @@ const Settings = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="fixed top-4 right-4">
-          <SettingsIcon className="h-5 w-5" />
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="fixed bottom-4 right-4 h-12 w-12 rounded-full bg-primary/10 hover:bg-primary/20"
+        >
+          <SettingsIcon className="h-6 w-6" />
         </Button>
       </SheetTrigger>
       <SheetContent>
