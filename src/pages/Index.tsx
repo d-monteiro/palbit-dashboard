@@ -86,7 +86,7 @@ const Index = () => {
           />
           <WaveformGraph 
             data={triangleData} 
-            title="Triangle Wave" 
+            title="Sawtooth Wave" 
             color="#888888"
           />
           <WaveformGraph 
