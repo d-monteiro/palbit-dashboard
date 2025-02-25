@@ -1,3 +1,4 @@
+
 export const generateSineWave = (length: number, frequency: number = 1): number[] => {
   return Array.from({ length }, (_, i) => 
     Math.sin(2 * Math.PI * frequency * i / length)
@@ -5,9 +6,13 @@ export const generateSineWave = (length: number, frequency: number = 1): number[
 };
 
 export const generateSquareWave = (length: number, frequency: number = 1): number[] => {
-  return Array.from({ length }, (_, i) => 
-    Math.sin(2 * Math.PI * frequency * i / length) >= 0 ? 1 : -1
-  );
+  // Add random noise with amplitude of 0.1 (10% of signal)
+  const noiseAmplitude = 0.1;
+  return Array.from({ length }, (_, i) => {
+    const baseSignal = Math.sin(2 * Math.PI * frequency * i / length) >= 0 ? 1 : -1;
+    const noise = (Math.random() * 2 - 1) * noiseAmplitude; // Random value between -0.1 and 0.1
+    return baseSignal + noise;
+  });
 };
 
 export const generateTriangleWave = (length: number, frequency: number = 1): number[] => {
