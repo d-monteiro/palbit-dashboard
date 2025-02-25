@@ -1,3 +1,4 @@
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { calculateMetrics } from '../utils/waveformGenerators';
 import { Button } from './ui/button';
@@ -46,6 +47,9 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
   const timeWindow = dataLength / samplingRate; // Window size in seconds
   const xMin = isFFT ? 0 : -timeWindow;
   const xMax = isFFT ? dataLength : 0;
+
+  // Define fixed ticks for Y axis
+  const yTicks = [-1.5, -1.0, -0.5, 0, 0.5, 1.0, 1.5];
 
   const handleExport = (seconds: number) => {
     const samplesPerSecond = 100; // Assuming 100Hz sampling rate
@@ -135,7 +139,9 @@ const WaveformGraph = ({ data, title, color = "#ea384c" }: WaveformGraphProps) =
             stroke="#666"
             tick={{ fill: '#666' }}
             domain={isFFT ? [0, 1] : [-1.5, 1.5]}
-            ticks={isFFT ? [0, 0.25, 0.5, 0.75, 1] : [-1.5, -1, -0.5, 0, 0.5, 1, 1.5]}
+            ticks={isFFT ? [0, 0.25, 0.5, 0.75, 1] : yTicks}
+            scale="linear"
+            interval={0}
           />
           <Tooltip
             contentStyle={{

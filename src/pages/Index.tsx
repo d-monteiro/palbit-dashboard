@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import WaveformGraph from '../components/WaveformGraph';
 import {
@@ -27,18 +28,20 @@ const Index = () => {
     setFftData(calculateFFT(generateSquareWave(WINDOW_SIZE)));
 
     const interval = setInterval(() => {
-      setTime(t => {
-        const newTime = t + 1;
+      setTime(prevTime => {
+        const newTime = prevTime + 1;
         // Adjust the phase calculation to maintain consistent frequency
         const normalizedTime = (newTime * UPDATE_INTERVAL) / 1000; // Convert to seconds
         const phase = normalizedTime * 2 * Math.PI; // Full cycle every second
         
         // Generate new points with consistent frequency
         const newSinePoint = Math.sin(phase);
-        const newSquarePoint = Math.sin(phase) >= 0 ? 1 : -1;
+        const baseSquarePoint = Math.sin(phase) >= 0 ? 1 : -1;
+        const noiseAmplitude = 0.1;
+        const noise = (Math.random() * 2 - 1) * noiseAmplitude;
+        const newSquarePoint = baseSquarePoint + noise;
         const newTrianglePoint = ((newTime % SAMPLE_COUNT) / SAMPLE_COUNT) * 2 - 1;
 
-        // Update data arrays with rolling window
         setSineData(prev => [...prev.slice(-WINDOW_SIZE + 1), newSinePoint]);
         setSquareData(prev => {
           const newData = [...prev.slice(-WINDOW_SIZE + 1), newSquarePoint];
@@ -52,7 +55,7 @@ const Index = () => {
     }, UPDATE_INTERVAL);
 
     return () => clearInterval(interval);
-  }, []);
+  }, []); // Empty dependency array to prevent re-running the effect
 
   return (
     <div className="min-h-screen p-6">
@@ -86,7 +89,7 @@ const Index = () => {
           />
           <WaveformGraph 
             data={triangleData} 
-            title="Sawtooth Wave" 
+            title="Triangle Wave" 
             color="#888888"
           />
           <WaveformGraph 
