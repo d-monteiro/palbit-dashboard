@@ -23,8 +23,6 @@ export const generateTriangleWave = (length: number, frequency: number = 1): num
 };
 
 export const calculateFFT = (data: number[]): number[] => {
-  // Simple FFT implementation for demonstration
-  // In a real application, you'd want to use a proper FFT library
   const fft = data.map((val, i) => {
     let real = 0;
     let imag = 0;
